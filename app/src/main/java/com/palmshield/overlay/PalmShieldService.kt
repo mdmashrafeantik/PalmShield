@@ -234,7 +234,8 @@ class PalmShieldService :
         val overlayFlags =
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_SPLIT_TOUCH
 
         layoutParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -248,7 +249,18 @@ class PalmShieldService :
             y = 0
         }
 
-        val view = ComposeView(this).apply {
+        val view = object : ComposeView(this) {
+            override fun dispatchTouchEvent(ev: android.view.MotionEvent?): Boolean {
+                super.dispatchTouchEvent(ev)
+                return true
+            }
+            override fun onTouchEvent(event: android.view.MotionEvent?): Boolean {
+                return true
+            }
+        }.apply {
+            isClickable = true
+            isFocusable = false
+            setOnTouchListener { _, _ -> true }
             setBackgroundColor(android.graphics.Color.TRANSPARENT)
             setViewTreeLifecycleOwner(this@PalmShieldService)
             setViewTreeViewModelStoreOwner(this@PalmShieldService)
