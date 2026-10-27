@@ -249,15 +249,7 @@ class PalmShieldService :
             y = 0
         }
 
-        val view = object : ComposeView(this) {
-            override fun dispatchTouchEvent(ev: android.view.MotionEvent?): Boolean {
-                super.dispatchTouchEvent(ev)
-                return true
-            }
-            override fun onTouchEvent(event: android.view.MotionEvent?): Boolean {
-                return true
-            }
-        }.apply {
+        val view = ComposeView(this).apply {
             isClickable = true
             isFocusable = false
             setOnTouchListener { _, _ -> true }
