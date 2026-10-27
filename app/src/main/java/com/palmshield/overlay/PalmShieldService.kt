@@ -344,7 +344,7 @@ class PalmShieldService :
                 .pointerInput(Unit) {
                     awaitPointerEventScope {
                         while (true) {
-                            val event = awaitPointerEvent()
+                            val event = awaitPointerEvent(androidx.compose.ui.input.pointer.PointerEventPass.Initial)
                             event.changes.forEach { it.consume() }
                             absorbedPalmTouches++
                         }
